@@ -28,8 +28,11 @@ class Test implements \ArrayAccess
      */
     private $frozen = [];
 
-    final private function __construct() {}
-    final private function __clone() {}
+    final private function __construct()
+    {}
+
+    final private function __clone()
+    {}
 
     /**
      * @return DI
