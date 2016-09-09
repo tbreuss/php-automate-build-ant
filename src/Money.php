@@ -1,5 +1,6 @@
 <?php
 
+namespace Tebe;
 
 class Money
 {
