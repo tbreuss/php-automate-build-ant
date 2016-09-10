@@ -1,10 +1,9 @@
 <phpdox xmlns="http://xml.phpdox.net/config">
- <project name="name-of-project" source="src" workdir="build/phpdox">
+ <project name="name-of-project" source="../src" workdir="../build/phpdox">
   <collector publiconly="false">
    <include mask="*.php" />
   </collector>
-
-  <generator output="build">
+  <generator output="../build">
    <build engine="html" enabled="true" output="api">
     <file extension="html" />
    </build>
