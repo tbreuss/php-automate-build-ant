@@ -29,7 +29,9 @@
 
     <target name="full-build"
             depends="prepare,composer,static-analysis,phpunit,phpdox,-check-failure"
-            description="Performs static analysis, runs the tests, and generates project documentation"/>
+            description="Performs static analysis, runs the tests, and generates project documentation">
+        <echo message="Built"/>
+    </target>
 
     <target name="full-build-parallel"
             depends="prepare,composer,static-analysis-parallel,phpunit,phpdox,-check-failure"
@@ -41,7 +43,9 @@
 
     <target name="static-analysis"
             depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
-            description="Performs static analysis"/>
+            description="Performs static analysis">
+        <echo message="Done"/>
+    </target>
 
     <!-- Adjust the threadCount attribute's value to the number of CPUs -->
     <target name="static-analysis-parallel"
@@ -84,17 +88,17 @@
     <target name="lint"
             unless="lint.done"
             description="Perform syntax check of sourcecode files">
-        <apply executable="php" taskname="lint">
+        <apply executable="php" failonerror="true" taskname="lint">
             <arg value="-l"/>
 
             <fileset dir="${basedir}/src">
                 <include name="**/*.php"/>
-                <modified/>
+                <!-- modified/ -->
             </fileset>
 
             <fileset dir="${basedir}/tests">
                 <include name="**/*.php"/>
-                <modified/>
+                <!-- modified/ -->
             </fileset>
         </apply>
 
@@ -150,6 +154,7 @@
         <exec executable="${phpmd}" taskname="phpmd">
             <arg path="${basedir}/src"/>
             <arg value="text"/>
+
             <arg path="${basedir}/build/phpmd.xml"/>
         </exec>
 
@@ -279,5 +284,6 @@
                 </not>
             </condition>
         </fail>
+        <echo message="Checked failure"/>
     </target>
 </project>
