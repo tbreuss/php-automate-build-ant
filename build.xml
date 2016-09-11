@@ -235,11 +235,9 @@
             depends="prepare"
             description="Run unit tests with PHPUnit">
         <exec executable="${phpunit}" resultproperty="result.phpunit" taskname="phpunit">
-            <arg value="--bootstrap"/>
-            <arg path="${basedir}/tests/bootstrap.php"/>
             <arg value="--configuration"/>
             <arg path="${basedir}/build/phpunit.xml"/>
-            <arg path="tests" />
+            <arg path="tests"/>
         </exec>
 
         <property name="phpunit.done" value="true"/>
@@ -269,10 +267,9 @@
 
     <target name="composer" description="Installing composer dependencies">
         <exec executable="composer" failonerror="true">
-            <arg value="install" />
-            <arg value="--prefer-dist" />
-            <arg value="--no-progress" />
-            <!-- env key="SYMFONY_ENV" value="test"/ -->
+            <arg value="install"/>
+            <arg value="--prefer-dist"/>
+            <arg value="--no-progress"/>
         </exec>
     </target>
 
