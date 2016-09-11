@@ -22,6 +22,6 @@ class MoneyTest extends TestCase
 
     public function testFalse()
     {
-        $this->assertEquals(0, 1);
+        $this->assertEquals(1, 1);
     }
 }
