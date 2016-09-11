@@ -5,12 +5,14 @@
          strict="true"
          verbose="true">
 
-    <!-- testsuites>
+    <!--
+    <testsuites>
         <testsuite name="ProjectName">
             <directory suffix="Test.php">tests/unit/</directory>
             <directory suffix="Test.php">tests/integration/</directory>
         </testsuite>
-    </testsuites -->
+    </testsuites>
+    -->
 
     <logging>
         <log type="coverage-html" target="coverage"/>
