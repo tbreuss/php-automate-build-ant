@@ -110,12 +110,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "a7120116b0931e72004b77bca962f4824f548dd0"
+                "reference": "f03823cde592264d3e235a8b6f73a8feefe3a8e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/a7120116b0931e72004b77bca962f4824f548dd0",
-                "reference": "a7120116b0931e72004b77bca962f4824f548dd0",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f03823cde592264d3e235a8b6f73a8feefe3a8e5",
+                "reference": "f03823cde592264d3e235a8b6f73a8feefe3a8e5",
                 "shasum": ""
             },
             "require": {
@@ -153,7 +153,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2016-08-30 20:38:34"
+            "time": "2016-09-16 12:08:58"
         },
         {
             "name": "pdepend/pdepend",
