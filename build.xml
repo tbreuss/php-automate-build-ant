@@ -37,11 +37,6 @@
         <echo message="Built"/>
     </target>
 
-    <target name="full-build-parallel" depends="prepare,composer,static-analysis-parallel,phpunit,phpdox,-check-failure"
-            description="Performs static analysis (executing the tools in parallel), runs the tests, and generates project documentation">
-        <echo message="Built"/>
-    </target>
-
     <target name="quick-build" depends="prepare,composer,lint,phpunit-no-coverage"
             description="Performs a lint check and runs the tests (without generating code coverage reports)">
         <echo message="Built"/>
@@ -50,20 +45,6 @@
     <target name="static-analysis" depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
             description="Performs static analysis">
         <echo message="Done"/>
-    </target>
-
-    <!-- Adjust the threadCount attribute's value to the number of CPUs -->
-    <target name="static-analysis-parallel" description="Performs static analysis (executing the tools in parallel)">
-        <parallel threadCount="2">
-            <sequential>
-                <antcall target="pdepend"/>
-                <antcall target="phpmd-ci"/>
-            </sequential>
-            <antcall target="lint"/>
-            <antcall target="phpcpd-ci"/>
-            <antcall target="phpcs-ci"/>
-            <antcall target="phploc-ci"/>
-        </parallel>
     </target>
 
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
@@ -131,7 +112,6 @@
             <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg"/>
             <arg path="${basedir}/src"/>
         </exec>
-
         <property name="pdepend.done" value="true"/>
     </target>
 
@@ -217,7 +197,6 @@
             <arg path="${basedir}/build/phpunit.xml"/>
             <arg value="--no-coverage"/>
         </exec>
-
         <property name="phpunit.done" value="true"/>
     </target>
 
