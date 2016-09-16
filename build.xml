@@ -215,6 +215,15 @@
         </exec>
     </target>
 
+    <target name="composer-update" description="Installing composer dependencies">
+        <exec executable="php" failonerror="true">
+            <arg value="${basedir}/composer.phar"/>
+            <arg value="update"/>
+            <arg value="--prefer-dist"/>
+            <arg value="--no-progress"/>
+        </exec>
+    </target>
+
     <target name="-check-failure">
         <fail message="PHPUnit did not finish successfully">
             <condition>
