@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="name-of-project" default="full-build">
 
-    <!-- By default, we assume all tools to be on the $PATH -->
+    <!-- By default the tools are managed by Composer in ${basedir}/vendor/bin -->
+    <property name="pdepend" value="${basedir}/vendor/bin/pdepend"/>
+    <property name="phpcpd" value="${basedir}/vendor/bin/phpcpd"/>
+    <property name="phpcs" value="${basedir}/vendor/bin/phpcs"/>
+    <property name="phpdox" value="${basedir}/vendor/bin/phpdox"/>
+    <property name="phploc" value="${basedir}/vendor/bin/phploc"/>
+    <property name="phpmd" value="${basedir}/vendor/bin/phpmd"/>
+    <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
+
+    <!-- Use this when all tools are on the $PATH -->
+    <!--
     <property name="pdepend" value="pdepend"/>
     <property name="phpcpd" value="phpcpd"/>
     <property name="phpcs" value="phpcs"/>
@@ -9,6 +19,7 @@
     <property name="phploc" value="phploc"/>
     <property name="phpmd" value="phpmd"/>
     <property name="phpunit" value="phpunit"/>
+    -->
 
     <!-- Use this when the tools are located as PHARs in ${basedir}/build/tools -->
     <!--
@@ -19,17 +30,6 @@
     <property name="phploc"  value="${basedir}/build/tools/phploc.phar"/>
     <property name="phpmd"   value="${basedir}/build/tools/phpmd.phar"/>
     <property name="phpunit" value="${basedir}/build/tools/phpunit.phar"/>
-    -->
-
-    <!-- Use this when the tools are managed by Composer in ${basedir}/vendor/bin -->
-    <!--
-    <property name="pdepend" value="${basedir}/vendor/bin/pdepend"/>
-    <property name="phpcpd"  value="${basedir}/vendor/bin/phpcpd"/>
-    <property name="phpcs"   value="${basedir}/vendor/bin/phpcs"/>
-    <property name="phpdox"  value="${basedir}/vendor/bin/phpdox"/>
-    <property name="phploc"  value="${basedir}/vendor/bin/phploc"/>
-    <property name="phpmd"   value="${basedir}/vendor/bin/phpmd"/>
-    <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
     -->
 
     <target name="full-build" depends="prepare,composer,static-analysis,phpunit,phpdox,-check-failure"
@@ -228,7 +228,8 @@
     </target>
 
     <target name="composer" description="Installing composer dependencies">
-        <exec executable="composer" failonerror="true">
+        <exec executable="php" failonerror="true">
+            <arg value="${basedir}/composer.phar"/>
             <arg value="install"/>
             <arg value="--prefer-dist"/>
             <arg value="--no-progress"/>
