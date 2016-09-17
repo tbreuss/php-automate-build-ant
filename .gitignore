@@ -6,3 +6,4 @@ build/coverage
 build/logs
 build/pdepend
 build/phpdox
+vendor
