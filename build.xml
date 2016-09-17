@@ -10,6 +10,15 @@
     <property name="phpmd" value="${basedir}/vendor/bin/phpmd"/>
     <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
 
+    <property environment="env"/>
+
+    <condition property="BUILD_NUMBER" value="${env.BUILD_NUMBER}" else="dev">
+        <isset property="{$env.BUILD_NUMBER}"/>
+    </condition>
+
+    <tstamp/>
+    <property name="zipfile" value="${basedir}/dist/release-${BUILD_NUMBER}-${DSTAMP}.zip"/>
+
     <!-- Use this when all tools are on the $PATH -->
     <!--
     <property name="pdepend" value="pdepend"/>
@@ -206,13 +215,37 @@
         <property name="phpdox.done" value="true"/>
     </target>
 
-    <target name="composer" description="Installing composer dependencies">
+    <target name="composer" description="Install composer packages including require-dev">
         <exec executable="php" failonerror="true">
             <arg value="${basedir}/composer.phar"/>
             <arg value="install"/>
             <arg value="--prefer-dist"/>
             <arg value="--no-progress"/>
         </exec>
+    </target>
+
+    <target name="deploy" depends="composer-remove-dev,archive"
+            description="Deploys the project">
+        <echo message="Built"/>
+    </target>
+
+    <target name="composer-remove-dev" description="Remove composer packages from require-dev">
+        <exec executable="php" failonerror="true">
+            <arg value="${basedir}/composer.phar"/>
+            <arg value="remove"/>
+            <arg value="--dev"/>
+            <arg value="--update-no-dev"/>
+            <arg value="--optimize-autoloader"/>
+        </exec>
+    </target>
+
+    <target name="archive" description="Archive the build files">
+        <delete file="${zipfile}"/>
+        <zip destfile="${zipfile}">
+            <fileset dir="${basedir}">
+                <include name="**"/>
+            </fileset>
+        </zip>
     </target>
 
     <target name="-check-failure">
