@@ -8,3 +8,4 @@ build/pdepend
 build/phpdox
 vendor
 dist
+composer.lock
