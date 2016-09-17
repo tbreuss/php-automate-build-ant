@@ -229,21 +229,25 @@
         <echo message="Built"/>
     </target>
 
-    <target name="composer-remove-dev" description="Remove composer packages from require-dev">
+    <target name="composer-remove-dev" unless="composer.done" description="Remove composer packages from require-dev">
+        <!-- Solves strange composer exception: Could not scan for classes inside ".." which does not appear to be a file nor a folder -->
+        <delete dir="${basedir}/vendor"/>
         <exec executable="php" failonerror="true">
             <arg value="${basedir}/composer.phar"/>
-            <arg value="remove"/>
-            <arg value="--dev"/>
-            <arg value="--update-no-dev"/>
-            <arg value="--optimize-autoloader"/>
+            <arg value="update"/>
+            <arg value="--no-dev"/>
+            <arg value="--prefer-dist"/>
+            <arg value="--no-progress"/>
         </exec>
+        <property name="composer.done" value="true"/>
     </target>
 
-    <target name="archive" description="Archive the build files">
+    <target name="archive" description="Make the release file by archiving the build files">
         <delete file="${zipfile}"/>
         <zip destfile="${zipfile}">
             <fileset dir="${basedir}">
                 <include name="**"/>
+                <exclude name="dist/**"/>
             </fileset>
         </zip>
     </target>
