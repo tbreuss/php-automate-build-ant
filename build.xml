@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="name-of-project" default="full-build">
 
-    <!-- By default, we assume all tools to be on the $PATH -->
+    <!-- By default the tools are managed by Composer in ${basedir}/vendor/bin -->
+    <property name="pdepend" value="${basedir}/vendor/bin/pdepend"/>
+    <property name="phpcpd" value="${basedir}/vendor/bin/phpcpd"/>
+    <property name="phpcs" value="${basedir}/vendor/bin/phpcs"/>
+    <property name="phpdox" value="${basedir}/vendor/bin/phpdox"/>
+    <property name="phploc" value="${basedir}/vendor/bin/phploc"/>
+    <property name="phpmd" value="${basedir}/vendor/bin/phpmd"/>
+    <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
+
+    <property environment="env"/>
+
+    <condition property="BUILD_NUMBER" value="${env.BUILD_NUMBER}" else="dev">
+        <isset property="{$env.BUILD_NUMBER}"/>
+    </condition>
+
+    <tstamp/>
+    <property name="zipfile" value="${basedir}/dist/release-${BUILD_NUMBER}-${DSTAMP}.zip"/>
+
+    <!-- Use this when all tools are on the $PATH -->
+    <!--
     <property name="pdepend" value="pdepend"/>
     <property name="phpcpd" value="phpcpd"/>
     <property name="phpcs" value="phpcs"/>
@@ -9,6 +28,7 @@
     <property name="phploc" value="phploc"/>
     <property name="phpmd" value="phpmd"/>
     <property name="phpunit" value="phpunit"/>
+    -->
 
     <!-- Use this when the tools are located as PHARs in ${basedir}/build/tools -->
     <!--
@@ -21,24 +41,8 @@
     <property name="phpunit" value="${basedir}/build/tools/phpunit.phar"/>
     -->
 
-    <!-- Use this when the tools are managed by Composer in ${basedir}/vendor/bin -->
-    <!--
-    <property name="pdepend" value="${basedir}/vendor/bin/pdepend"/>
-    <property name="phpcpd"  value="${basedir}/vendor/bin/phpcpd"/>
-    <property name="phpcs"   value="${basedir}/vendor/bin/phpcs"/>
-    <property name="phpdox"  value="${basedir}/vendor/bin/phpdox"/>
-    <property name="phploc"  value="${basedir}/vendor/bin/phploc"/>
-    <property name="phpmd"   value="${basedir}/vendor/bin/phpmd"/>
-    <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
-    -->
-
     <target name="full-build" depends="prepare,composer,static-analysis,phpunit,phpdox,-check-failure"
             description="Performs static analysis, runs the tests, and generates project documentation">
-        <echo message="Built"/>
-    </target>
-
-    <target name="full-build-parallel" depends="prepare,composer,static-analysis-parallel,phpunit,phpdox,-check-failure"
-            description="Performs static analysis (executing the tools in parallel), runs the tests, and generates project documentation">
         <echo message="Built"/>
     </target>
 
@@ -50,20 +54,6 @@
     <target name="static-analysis" depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
             description="Performs static analysis">
         <echo message="Done"/>
-    </target>
-
-    <!-- Adjust the threadCount attribute's value to the number of CPUs -->
-    <target name="static-analysis-parallel" description="Performs static analysis (executing the tools in parallel)">
-        <parallel threadCount="2">
-            <sequential>
-                <antcall target="pdepend"/>
-                <antcall target="phpmd-ci"/>
-            </sequential>
-            <antcall target="lint"/>
-            <antcall target="phpcpd-ci"/>
-            <antcall target="phpcs-ci"/>
-            <antcall target="phploc-ci"/>
-        </parallel>
     </target>
 
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
@@ -131,7 +121,6 @@
             <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg"/>
             <arg path="${basedir}/src"/>
         </exec>
-
         <property name="pdepend.done" value="true"/>
     </target>
 
@@ -217,7 +206,6 @@
             <arg path="${basedir}/build/phpunit.xml"/>
             <arg value="--no-coverage"/>
         </exec>
-
         <property name="phpunit.done" value="true"/>
     </target>
 
@@ -227,12 +215,41 @@
         <property name="phpdox.done" value="true"/>
     </target>
 
-    <target name="composer" description="Installing composer dependencies">
-        <exec executable="composer" failonerror="true">
+    <target name="composer" description="Install composer packages including require-dev">
+        <exec executable="php" failonerror="true">
+            <arg value="${basedir}/composer.phar"/>
             <arg value="install"/>
             <arg value="--prefer-dist"/>
             <arg value="--no-progress"/>
         </exec>
+    </target>
+
+    <target name="deploy" depends="composer-remove-dev,archive"
+            description="Deploys the project">
+        <echo message="Built"/>
+    </target>
+
+    <target name="composer-remove-dev" unless="composer.done" description="Remove composer packages from require-dev">
+        <!-- Solves strange composer exception: Could not scan for classes inside ".." which does not appear to be a file nor a folder -->
+        <delete dir="${basedir}/vendor"/>
+        <exec executable="php" failonerror="true">
+            <arg value="${basedir}/composer.phar"/>
+            <arg value="update"/>
+            <arg value="--no-dev"/>
+            <arg value="--prefer-dist"/>
+            <arg value="--no-progress"/>
+        </exec>
+        <property name="composer.done" value="true"/>
+    </target>
+
+    <target name="archive" description="Make the release file by archiving the build files">
+        <delete file="${zipfile}"/>
+        <zip destfile="${zipfile}">
+            <fileset dir="${basedir}">
+                <include name="**"/>
+                <exclude name="dist/**"/>
+            </fileset>
+        </zip>
     </target>
 
     <target name="-check-failure">
