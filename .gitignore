@@ -2,10 +2,10 @@
 .DS_Store
 cache.properties
 composer.lock
+composer.phar
 build/api
 build/coverage
 build/logs
 build/pdepend
 build/phpdox
-dist
 vendor

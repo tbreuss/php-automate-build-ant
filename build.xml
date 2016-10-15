@@ -10,15 +10,6 @@
     <property name="phpmd" value="${basedir}/vendor/bin/phpmd"/>
     <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
 
-    <property environment="env"/>
-
-    <condition property="BUILD_NUMBER" value="${env.BUILD_NUMBER}" else="dev">
-        <isset property="{$env.BUILD_NUMBER}"/>
-    </condition>
-
-    <tstamp/>
-    <property name="zipfile" value="${basedir}/dist/release-${BUILD_NUMBER}-${DSTAMP}.zip"/>
-
     <!-- Use this when all tools are on the $PATH -->
     <!--
     <property name="pdepend" value="pdepend"/>
@@ -41,7 +32,7 @@
     <property name="phpunit" value="${basedir}/build/tools/phpunit.phar"/>
     -->
 
-    <target name="clean" unless="clean.done" description="Cleanup build artifacts">
+    <target name="clean" unless="clean.done" description="Cleanup build artifacts.">
         <delete dir="${basedir}/build/api"/>
         <delete dir="${basedir}/build/coverage"/>
         <delete dir="${basedir}/build/logs"/>
@@ -51,6 +42,7 @@
     </target>
 
     <target name="composer" description="Install composer packages including require-dev.">
+        <get src="https://getcomposer.org/download/1.2.1/composer.phar" dest="composer.phar"/>
         <exec executable="php" failonerror="true">
             <arg value="${basedir}/composer.phar"/>
             <arg value="install"/>
