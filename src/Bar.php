@@ -1,41 +1,41 @@
 <?php
 
-namespace Tebe;
+namespace Foo;
 
 /**
- * Class Money is a dead simple example for our PHP Unit Test.
- * @package Tebe
+ * Class Bar is a dead simple example for our PHP Unit Test.
+ * @package Foo
  */
-class Money
+class Bar
 {
     /** @var float */
-    private $amount;
+    private $number;
 
     /**
      * Money constructor.
-     * @param float $amount
+     * @param float $number
      */
-    public function __construct($amount)
+    public function __construct($number)
     {
-        $this->amount = $amount;
+        $this->number = $number;
     }
 
     /**
-     * Get the amount.
+     * Get the number.
      * @return float
      */
-    public function getAmount()
+    public function getNumber()
     {
-        return $this->amount;
+        return $this->number;
     }
 
     /**
-     * Get a Money object with the amount negated.
-     * @return Money
+     * Get a Money object with the number negated.
+     * @return Bar
      */
     public function negate()
     {
-        return new Money(-1 * $this->amount);
+        return new Bar(-1 * $this->number);
     }
 
     /**

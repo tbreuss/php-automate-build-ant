@@ -1,23 +1,23 @@
 <?php
 
-namespace Test;
+namespace Foo;
 
 use PHPUnit\Framework\TestCase;
-use Tebe\Money;
+use Foo\Bar;
 
-class MoneyTest extends TestCase
+class BarTest extends TestCase
 {
 
     public function testCanBeNegated()
     {
         // Arrange
-        $a = new Money(1);
+        $a = new Bar(1);
 
         // Act
         $b = $a->negate();
 
         // Assert
-        $this->assertEquals(-1, $b->getAmount());
+        $this->assertEquals(-1, $b->getNumber());
     }
 
     public function testFalse()
