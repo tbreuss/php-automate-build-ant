@@ -50,7 +50,7 @@
         <property name="clean.done" value="true"/>
     </target>
 
-    <target name="composer" description="Install composer packages including require-dev">
+    <target name="composer" description="Install composer packages including require-dev.">
         <exec executable="php" failonerror="true">
             <arg value="${basedir}/composer.phar"/>
             <arg value="install"/>
@@ -60,11 +60,11 @@
     </target>
 
     <target name="full-build" depends="prepare,composer,static-analysis,phpunit,phpdox,-check-failure"
-            description="Perform static analysis, run tests, and generate project documentation">
+            description="Perform static analysis, run tests, and generate project documentation.">
         <echo message="Built"/>
     </target>
 
-    <target name="lint" unless="lint.done" description="Perform syntax check of PHP sourcecode files">
+    <target name="lint" unless="lint.done" description="Perform syntax check of PHP sourcecode files.">
         <apply executable="php" failonerror="true" taskname="lint">
             <arg value="-l"/>
             <fileset dir="${basedir}/src">
@@ -135,7 +135,7 @@
     </target>
 
     <target name="phpdox" unless="phpdox.done" depends="phploc-ci,phpcs-ci,phpmd-ci"
-            description="Generate project documentation using phpDox">
+            description="Generate project documentation using phpDox.">
         <exec executable="${phpdox}" dir="${basedir}/build" taskname="phpdox"/>
         <property name="phpdox.done" value="true"/>
     </target>
@@ -186,7 +186,7 @@
         <property name="phpmd.done" value="true"/>
     </target>
 
-    <target name="phpunit" unless="phpunit.done" depends="prepare" description="Run unit tests with PHPUnit">
+    <target name="phpunit" unless="phpunit.done" depends="prepare" description="Run unit tests with PHPUnit.">
         <exec executable="${phpunit}" resultproperty="result.phpunit" taskname="phpunit">
             <arg value="--configuration"/>
             <arg path="${basedir}/build/phpunit.xml"/>
@@ -196,7 +196,7 @@
     </target>
 
     <target name="phpunit-no-coverage" unless="phpunit.done" depends="prepare"
-            description="Run unit tests with PHPUnit without generating code coverage reports">
+            description="Run unit tests with PHPUnit without generating code coverage reports.">
         <exec executable="${phpunit}" failonerror="true" taskname="phpunit">
             <arg value="--configuration"/>
             <arg path="${basedir}/build/phpunit.xml"/>
@@ -206,7 +206,7 @@
         <property name="phpunit.done" value="true"/>
     </target>
 
-    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
+    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build.">
         <mkdir dir="${basedir}/build/api"/>
         <mkdir dir="${basedir}/build/coverage"/>
         <mkdir dir="${basedir}/build/logs"/>
@@ -216,12 +216,12 @@
     </target>
 
     <target name="quick-build" depends="prepare,composer,lint,phpunit-no-coverage"
-            description="Performs a lint check and runs the tests (without generating code coverage reports)">
+            description="Perform lint check and run tests without generating code coverage reports.">
         <echo message="Built"/>
     </target>
 
     <target name="static-analysis" depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
-            description="Performs static analysis">
+            description="Perform static analysis.">
         <echo message="Done"/>
     </target>
 
