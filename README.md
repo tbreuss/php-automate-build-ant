@@ -1,4 +1,4 @@
-# Example Project
+# Automate PHP Build with Apache Ant
 
 This is an example PHP project using Apache Ant for automating the build process.
 It orchestrates the execution of several software quality and metric tools defined in 
@@ -17,7 +17,7 @@ the `build.xml` build script like:
 This project is also part of a proof of concept called "Continuous Integration and Deployement for
 PHP projects" which uses Jenkins as CI server.
 
-You can find more information about this project at <https://github.com/php-jenkins>.
+You can find more information about this project at <https://github.com/code-smell/php-automate-build-ant>.
 
 ## Requirements
 
@@ -50,7 +50,7 @@ The other tasks can also be invoked directly but this isn't the intended purpose
 
 Please use the following commands to clone the project and start the default target. 
 
-    $ git clone https://github.com/php-jenkins/example-project.git
+    $ git clone https://github.com/code-smell/php-automate-build-ant.git
     $ cd example-project
     $ ant
 
