@@ -54,9 +54,9 @@ Please use the following commands to clone the project and start the default tar
     $ cd example-project
     $ ant
 
-## Build Directory
+## Build Artifacts
 
-Executing the build.xml script will produce the following build directory:
+Executing the build.xml script will produce the following build artifacts:
 
     build
     |-- api ...
@@ -74,7 +74,7 @@ Executing the build.xml script will produce the following build directory:
     |-- pdepend ...
     `-- phpdox ...
 
-These build artifacts can be read by humen or could be processed by Jenkins.
+These artifacts can be read by human or could be processed by Jenkins CI.
 
 
 [git]: https://git-scm.com
