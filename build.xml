@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="name-of-project" default="full-build">
+<project name="php-automate-build-ant" default="full-build">
 
     <!-- By default the tools are managed by Composer in ${basedir}/vendor/bin -->
     <property name="pdepend" value="${basedir}/vendor/bin/pdepend"/>
@@ -212,7 +212,7 @@
         <echo message="Built"/>
     </target>
 
-    <target name="static-analysis" depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
+    <target name="static-analysis" depends="composer,lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
             description="Perform static analysis.">
         <echo message="Done"/>
     </target>
